@@ -48,7 +48,7 @@ notebook.pack(expand=True, fill="both")
 window.geometry("800x500")
 window.minsize(400, 500)
 window.config(bg="#393E46")
-window.title("7NTC Recruiter Assistant v1.0")
+window.title("7NTC Recruiter Assistant v1.1")
 
 #-------------- Screenshot Timer --------------
 logo = tk.Label(tab1, text="Screenshot Timer", font=('Arial', 18))
@@ -70,7 +70,7 @@ submit.pack(padx=10, pady=5)
 output_text = tk.Text(tab1, height=9 , width=12, font=('Arial', 16))
 output_text.tag_configure("center", justify='center')
 output_text.config(bg="#C7C7C7")
-output_text.pack(padx=30, pady=30)
+output_text.pack(padx=30, pady=20)
 
 my_name = tk.Label(tab1, text="Billtfi (BILLTFI9)", font=('Arial', 10), fg="#C7C7C7", bg="#393E46")
 my_name.place(relx=1.0, rely=1.0, anchor='se', x=-5, y=-5)
