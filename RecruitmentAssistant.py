@@ -13,9 +13,20 @@ ntc_logo = r"""
 """
 print(ntc_logo)
 
-def calculate_time():
+global countdown_after_id 
+countdown_after_id = None
+global countdown_cycle_count
+countdown_cycle_count = 0
+
+def calculate_time(): # Screenshot time calculator
     start_time = time_var.get()
     output_text.delete('1.0', tk.END)
+
+    global countdown_after_id 
+    countdown_after_id = None
+    global countdown_cycle_count
+    countdown_cycle_count = 0
+
     try:
         dtime_timevar = datetime.strptime(start_time, "%H:%M")
 
@@ -25,11 +36,47 @@ def calculate_time():
             dtime_timevar += timedelta(minutes=15)
         print("----------------")
 
+        countdown_label.config(text="Starting countdown")
+        start_timer(899)
+
     except ValueError:
         output_text.insert(tk.END, "Learn to type :[")
         print("Learn to type :[\n----------------")
+        countdown_label.config(text="Error")
 
     output_text.tag_add("center", "1.0", "end")
+
+def start_timer(seconds_left):
+    global countdown_after_id
+    if countdown_after_id:
+        window.after_cancel(countdown_after_id)
+    
+    update_countdown(seconds_left)
+
+def update_countdown(temp_seconds):
+    global countdown_after_id
+    global countdown_cycle_count
+
+    if temp_seconds > 0:
+        mins, secs = divmod(temp_seconds, 60)
+        time_str = " {:02d}:{:02d}".format(mins, secs)
+        countdown_label.config(text=time_str)
+        print(time_str, end="\r")
+
+        countdown_after_id = window.after(1000, update_countdown, temp_seconds - 1)
+    else:
+        countdown_cycle_count += 1
+
+        if countdown_cycle_count < 8:
+            print(f"\nCycle {countdown_cycle_count} Done!")
+            start_timer(899)
+
+        else:
+            countdown_label.config(fg="#C70000")
+            countdown_label.config(text="Touch grass")
+            print("\nTouch grass")
+            countdown_after_id = None
+
 
 #-------------- Window & Tabs --------------
 window = tk.Tk()
@@ -40,15 +87,16 @@ tab1.config(bg="#393E46")
 tab2 = Frame(notebook)
 tab2.config(bg="#393E46")
 
+# Tabs
 notebook.add(tab1, text="Screenshot Timer")
 notebook.add(tab2, text="Notepad")
 
 notebook.pack(expand=True, fill="both")
 
-window.geometry("800x500")
-window.minsize(400, 500)
+window.geometry("400x550") # Window Size
+window.minsize(400, 550)
 window.config(bg="#393E46")
-window.title("7NTC Recruiter Assistant v1.1")
+window.title("7NTC Recruiter Assistant v1.2") # Window Title
 
 #-------------- Screenshot Timer --------------
 logo = tk.Label(tab1, text="Screenshot Timer", font=('Arial', 18))
@@ -67,6 +115,9 @@ time_entry.focus()
 submit = tk.Button(tab1, text="Calculate Screenshot times", command=calculate_time , font=('Arial', 16))
 submit.pack(padx=10, pady=5)
 
+countdown_label = tk.Label(tab1, text="Hello :]", font=('Arial', 16, 'bold'), height=1, width= 10, fg="#FFD700", bg="#393E46")
+countdown_label.pack(padx=10, pady=10)
+
 output_text = tk.Text(tab1, height=9 , width=12, font=('Arial', 16))
 output_text.tag_configure("center", justify='center')
 output_text.config(bg="#C7C7C7")
@@ -79,10 +130,10 @@ my_name.place(relx=1.0, rely=1.0, anchor='se', x=-5, y=-5)
 logo = tk.Label(tab2, text="Notepad", font=('Arial', 18))
 logo.pack(padx=10, pady=30)
 
-notepad = tk.Text(tab2, height=15, width=50, font=('Arial', 16))
+notepad = tk.Text(tab2, height=15, width=28, font=('Arial', 16))
 notepad.pack(padx=25, pady=25)
 
 my_name = tk.Label(tab2, text="Billtfi (BILLTFI9)", font=('Arial', 10), fg="#C7C7C7", bg="#393E46")
-my_name.place(relx=1.0, rely=1.0, anchor='se', x=-5, y=-3)
+my_name.place(relx=1.0, rely=1.0, anchor='se', x=-5, y=-5)
 
 window.mainloop() # End of Window
