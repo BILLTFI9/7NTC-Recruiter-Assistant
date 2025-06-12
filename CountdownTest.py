@@ -1,9 +1,5 @@
-from time import sleep
+import pygame
 
-seconds = 15
-while seconds >= 0:
-    mins, secs = divmod(seconds, 60)
-    time = "   {:02d}:{:02d}".format(mins,secs)
-    print(time, end="\r")
-    sleep(1)
-    seconds -= 1
+pygame.mixer.init()
+pygame.mixer.music.load('WindChimes.wav')
+pygame.mixer.music.play(loops=0)

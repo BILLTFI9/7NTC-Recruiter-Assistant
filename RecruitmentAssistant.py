@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from tkinter import Frame, ttk
 import tkinter as tk
+import pygame
 
 ntc_logo = r"""                                                
   ______ _   _ _______ _____ 
@@ -17,6 +18,9 @@ global countdown_after_id
 countdown_after_id = None
 global countdown_cycle_count
 countdown_cycle_count = 0
+
+pygame.mixer.init()
+pygame.mixer.music.load('WindChimes.wav')
 
 def calculate_time(): # Screenshot time calculator
     start_time = time_var.get()
@@ -37,7 +41,7 @@ def calculate_time(): # Screenshot time calculator
         print("----------------")
 
         countdown_label.config(text="Starting countdown")
-        start_timer(899)
+        start_timer(15)
 
     except ValueError:
         output_text.insert(tk.END, "Learn to type :[")
@@ -69,7 +73,8 @@ def update_countdown(temp_seconds):
 
         if countdown_cycle_count < 8:
             print(f"\nCycle {countdown_cycle_count} Done!")
-            start_timer(899)
+            pygame.mixer.music.play(loops=0)
+            start_timer(15)
 
         else:
             countdown_label.config(fg="#C70000")
@@ -80,6 +85,7 @@ def update_countdown(temp_seconds):
 
 #-------------- Window & Tabs --------------
 window = tk.Tk()
+window.iconbitmap("RecruiterAssistantV1.3.ico")
 notebook = ttk.Notebook(window)
 
 tab1 = Frame(notebook)
@@ -96,7 +102,7 @@ notebook.pack(expand=True, fill="both")
 window.geometry("400x550") # Window Size
 window.minsize(400, 550)
 window.config(bg="#393E46")
-window.title("7NTC Recruiter Assistant v1.2") # Window Title
+window.title("7NTC Recruiter Assistant v1.3") # Window Title
 
 #-------------- Screenshot Timer --------------
 logo = tk.Label(tab1, text="Screenshot Timer", font=('Arial', 18))
